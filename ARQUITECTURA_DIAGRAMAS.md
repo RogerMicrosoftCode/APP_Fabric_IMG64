@@ -12,8 +12,7 @@
 4. [Flujo de Consumo por Workbooks](#4-flujo-de-consumo-por-workbooks)
 5. [Flujo de Consumo por Agentes IA](#5-flujo-de-consumo-por-agentes-ia)
 6. [Arquitectura de Seguridad y Governance](#6-arquitectura-de-seguridad-y-governance)
-7. [Alta Disponibilidad y Disaster Recovery](#7-alta-disponibilidad-y-disaster-recovery)
-8. [Flujo de Datos con Optimización](#8-flujo-de-datos-con-optimización)
+7. [Flujo de Datos con Optimización](#7-flujo-de-datos-con-optimización)
 
 ---
 
@@ -70,7 +69,6 @@ graph TB
         ENTRA[Microsoft Entra ID<br/>👤 Authentication<br/>🔐 Authorization]
         RLS[Row-Level Security<br/>🔒 Department-based<br/>📂 Data Filtering]
         ABAC[Attribute-Based Access<br/>🏷️ Classification-based<br/>🎭 Role-based]
-        PURVIEW[Microsoft Purview<br/>📜 Data Catalog<br/>🔍 Lineage Tracking<br/>🏷️ Classification]
         KV[Azure Key Vault<br/>🔑 Secrets Management<br/>🔐 API Keys]
     end
     
@@ -106,8 +104,6 @@ graph TB
     RLS -.->|Filter| CONTENT
     ABAC -.->|Filter| REG
     KV -.->|Provide Secrets| DP
-    REG -.->|Metadata| PURVIEW
-    CONTENT -.->|Metadata| PURVIEW
     
     %% Auditoría
     WB -.->|Log Access| AUDIT
@@ -124,7 +120,6 @@ graph TB
     style WB fill:#7FBA00,color:#fff,stroke:#5e8700,stroke-width:3px
     style AG fill:#7FBA00,color:#fff,stroke:#5e8700,stroke-width:3px
     style ENTRA fill:#FFB900,color:#000,stroke:#d39300,stroke-width:3px
-    style PURVIEW fill:#FFB900,color:#000,stroke:#d39300,stroke-width:3px
     style CACHE fill:#E81123,color:#fff,stroke:#c50f1f,stroke-width:2px
 ```
 
@@ -401,8 +396,6 @@ graph TB
         
         AUDIT_TABLE[photo_access_audit<br/>-------------<br/>📝 audit_id<br/>🆔 employee_id<br/>👤 accessed_by<br/>⏰ access_timestamp<br/>📊 access_type<br/>✅ success<br/>❌ denial_reason]
         
-        PURVIEW_CAT[Microsoft Purview<br/>Data Catalog<br/>-------------<br/>📁 Asset Registration<br/>🏷️ Auto-Classification<br/>🔍 Lineage Tracking<br/>📜 Compliance Reports]
-        
         RETENTION[Retention Policies<br/>-------------<br/>Active Photos: 7 years<br/>Audit Logs: 10 years<br/>Inactive Employees: 2 years]
     end
     
@@ -435,111 +428,21 @@ graph TB
     ABAC_ATTRS -.->|Apply| MASK_RULES
     
     MASK_RULES -.->|Log| AUDIT_TABLE
-    AUDIT_TABLE --> PURVIEW_CAT
-    PURVIEW_CAT --> RETENTION
+    AUDIT_TABLE --> RETENTION
     
     KV -.->|Secure| ENTRA
     ENCRYPT -.->|Protect| AUDIT_TABLE
-    
-    PURVIEW_CAT -.->|Compliance| GDPR
-    PURVIEW_CAT -.->|Compliance| SOC2
-    PURVIEW_CAT -.->|Compliance| ISO
     
     style ENTRA fill:#FFB900,color:#000,stroke:#d39300,stroke-width:3px
     style RLS_LAYER fill:#7FBA00,color:#fff,stroke:#5e8700,stroke-width:2px
     style ABAC_LAYER fill:#0078D4,color:#fff,stroke:#005a9e,stroke-width:2px
     style AUDIT_TABLE fill:#50E6FF,color:#000,stroke:#00b7c3,stroke-width:2px
-    style PURVIEW_CAT fill:#FFB900,color:#000,stroke:#d39300,stroke-width:3px
     style KV fill:#E81123,color:#fff,stroke:#c50f1f,stroke-width:2px
 ```
 
 ---
 
-## 7. Alta Disponibilidad y Disaster Recovery
-
-```mermaid
-graph TB
-    subgraph "Primary Region: East US"
-        direction TB
-        
-        subgraph PRIMARY[Primary Fabric Workspace]
-            P_LH[Lakehouse Primary<br/>📁 Files + Tables]
-            P_NB[Pipeline Notebooks]
-            P_WB[Workbooks]
-        end
-        
-        P_ONELAKE[OneLake Storage<br/>East US<br/>🔄 Auto-Backup<br/>📸 Point-in-Time Recovery]
-    end
-    
-    subgraph "Secondary Region: West US 2"
-        direction TB
-        
-        subgraph SECONDARY[Secondary Fabric Workspace]
-            S_LH[Lakehouse Secondary<br/>📁 Files + Tables<br/>🔄 Read-Replica]
-            S_WB[Workbooks Read-Only]
-        end
-        
-        S_ONELAKE[OneLake Storage<br/>West US 2<br/>📋 Geo-Replicated]
-    end
-    
-    subgraph "Global Distribution"
-        direction LR
-        
-        CDN[Azure CDN<br/>🌍 Global Edge Locations<br/>⚡ Cache TTL: 24h]
-        
-        FRONTDOOR[Azure Front Door<br/>🔀 Traffic Manager<br/>🏥 Health Probes<br/>🔄 Auto-Failover]
-    end
-    
-    subgraph "Backup & Recovery"
-        direction TB
-        
-        BACKUP[Backup Strategy<br/>-------------<br/>🔄 Continuous: Delta Lake<br/>📅 Daily: Full Snapshot<br/>📅 Weekly: Archive]
-        
-        RTO[Recovery Objectives<br/>-------------<br/>⏱️ RTO: 4 hours<br/>💾 RPO: 15 minutes<br/>📊 Data Loss: <0.1%]
-        
-        DR_PROC[DR Procedures<br/>-------------<br/>1️⃣ Detect Outage<br/>2️⃣ Validate Secondary<br/>3️⃣ DNS Failover<br/>4️⃣ Monitor Recovery<br/>5️⃣ Post-Mortem]
-    end
-    
-    subgraph "Health Monitoring"
-        direction TB
-        
-        HEALTH[Health Checks<br/>-------------<br/>✅ Storage Availability<br/>✅ API Responsiveness<br/>✅ Query Performance<br/>✅ Pipeline Status]
-        
-        ALERTS[Alert Configuration<br/>-------------<br/>🔴 P1: Primary Down<br/>🟡 P2: Performance Degraded<br/>🟢 P3: Scheduled Maintenance]
-    end
-    
-    %% Relaciones de Replicación
-    P_LH -->|Geo-Replication| S_LH
-    P_ONELAKE <-->|Continuous Sync| S_ONELAKE
-    P_NB -.->|Git Sync| S_LH
-    
-    %% Distribución Global
-    P_ONELAKE --> CDN
-    S_ONELAKE --> CDN
-    
-    FRONTDOOR -->|Primary Route| PRIMARY
-    FRONTDOOR -.->|Failover Route| SECONDARY
-    
-    %% Backup
-    P_ONELAKE --> BACKUP
-    BACKUP --> RTO
-    
-    %% Monitoreo
-    PRIMARY --> HEALTH
-    SECONDARY --> HEALTH
-    HEALTH --> ALERTS
-    ALERTS -.->|Trigger| DR_PROC
-    
-    style PRIMARY fill:#7FBA00,color:#fff,stroke:#5e8700,stroke-width:3px
-    style SECONDARY fill:#50E6FF,color:#000,stroke:#00b7c3,stroke-width:3px
-    style CDN fill:#E81123,color:#fff,stroke:#c50f1f,stroke-width:2px
-    style FRONTDOOR fill:#0078D4,color:#fff,stroke:#005a9e,stroke-width:3px
-    style BACKUP fill:#FFB900,color:#000,stroke:#d39300,stroke-width:2px
-```
-
----
-
-## 8. Flujo de Datos con Optimización
+## 7. Flujo de Datos con Optimización
 
 ```mermaid
 graph LR
@@ -633,9 +536,6 @@ graph LR
 | **Query Latency** | 250ms (avg) | 50ms (avg) | **-80%** ⚡ |
 | **Scalability** | Limited (2GB max table) | Unlimited | **∞** 📈 |
 | **Cache Hit Rate** | N/A | >80% | **New** 🎯 |
-| **Geo-Replication** | Manual | Automatic | **100%** 🌍 |
-| **Governance** | Basic | Enterprise (Purview) | **+500%** 🔒 |
-| **DR/HA** | No | Yes (Multi-region) | **New** 🏥 |
 | **API Access** | Direct table query | Optimized API Layer | **+300%** 🔌 |
 
 ---
@@ -678,24 +578,6 @@ graph LR
 
 ---
 
-### ADR-003: Multi-Region Replication
-
-**Decisión:** Implementar geo-replication para DR
-
-**Contexto:**
-- SLA requirement: 99.9% uptime
-- RTO: 4 hours, RPO: 15 minutes
-- Usuarios distribuidos globalmente
-
-**Consecuencias:**
-- ✅ Alta disponibilidad garantizada
-- ✅ Mejor latencia para usuarios remotos
-- ✅ Compliance con regulaciones
-- ❌ Overhead de almacenamiento replicado
-- ❌ Complejidad operacional
-
----
-
 ## 📚 Leyenda de Símbolos
 
 | Símbolo | Significado |
@@ -711,8 +593,6 @@ graph LR
 | ⚠️ | Alerta / Warning |
 | ✅ | Estado OK / Exitoso |
 | ❌ | Error / Fallido |
-| 🏥 | Alta Disponibilidad |
-| 🌍 | Global / Multi-región |
 
 ---
 

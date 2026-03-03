@@ -97,7 +97,7 @@
 │  • Scalability: Ilimitada                                           │
 │  • Versioning: Sí                                                   │
 │  • Caching: Redis (hit rate >80%)                                   │
-│  • Governance: RLS + ABAC + Purview                                 │
+│  • Governance: RLS + ABAC                                           │
 │  • Multi-channel: Workbooks + Agents + APIs                         │
 └──────────────────────────────────────────────────────────────────────┘
 ```
@@ -151,53 +151,6 @@ Performance:    30% ──▶ 95%
 Reliability:    40% ──▶ 90%
 Operations:     50% ──▶ 85%
 Testing:        60% ──▶ 90%
-```
-
----
-
-## 🗺️ Roadmap Visual de 5 Semanas
-
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         5-WEEK IMPLEMENTATION ROADMAP                    │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  Week 1-2: SPRINT 1 - FOUNDATION                                       │
-│  ┌────────────────────────────────────────────────────────────────┐    │
-│  │  Mon  │  Tue  │  Wed  │  Thu  │  Fri  │  Mon  │  Tue  │  Wed   │    │
-│  ├───────┼───────┼───────┼───────┼───────┼───────┼───────┼────────┤    │
-│  │ Setup │ Files │Migrate│ RLS   │Content│ Work  │ UAT   │ Review │    │
-│  │ Env   │Struct │Data   │Config │Table  │book   │ Test  │Sprint  │    │
-│  └────────────────────────────────────────────────────────────────┘    │
-│          ✓ Deliverable: Workbooks showing photos                        │
-│          ✓ Checkpoint: Migration success rate >99%                      │
-│                                                                          │
-│  Week 3-4: SPRINT 2 - AGENT INTEGRATION                                │
-│  ┌────────────────────────────────────────────────────────────────┐    │
-│  │  Thu  │  Fri  │  Mon  │  Tue  │  Wed  │  Thu  │  Fri  │  Mon   │    │
-│  ├───────┼───────┼───────┼───────┼───────┼───────┼───────┼────────┤    │
-│  │ API   │ Redis │ Agent │Audit  │Perf   │Load   │ UAT   │ Review │    │
-│  │Design │Cache  │Integr │Log    │Tuning │Test   │Agent  │Sprint  │    │
-│  └────────────────────────────────────────────────────────────────┘    │
-│          ✓ Deliverable: AI Agents consuming photos via API              │
-│          ✓ Checkpoint: Latency P95 <100ms                               │
-│                                                                          │
-│  Week 5: SPRINT 3 - GOVERNANCE & GO-LIVE                               │
-│  ┌────────────────────────────────────────────────────────────────┐    │
-│  │  Tue  │  Wed  │  Thu  │  Fri  │  Mon  │                        │    │
-│  ├───────┼───────┼───────┼───────┼───────┤                        │    │
-│  │ ABAC  │Purview│Monitor│ DR    │Go/NoGo│   🚀 GO-LIVE 🚀       │    │
-│  │Policy │Setup  │Alerts │Drill  │Meeting│                        │    │
-│  └────────────────────────────────────────────────────────────────┘    │
-│          ✓ Deliverable: Production-ready system                         │
-│          ✓ Checkpoint: Readiness score >90%                             │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
-
-Legend:
-  ✓ = Completed
-  ⏳ = In Progress
-  ◯ = Not Started
 ```
 
 ---
@@ -267,10 +220,9 @@ Legend:
 │  │  │   Audit & Governance   │  │    - photo_html               │ │ ││
 │  │  ├────────────────────────┤  │    - metadata_json            │ │ ││
 │  │  │ 📋 photo_access_audit  │  │                               │ │ ││
-│  │  │ 🏷️ Microsoft Purview   │  │ Optimizations:                │ │ ││
-│  │  │ 🔒 Row-Level Security  │  │ - ZORDER(employee_id)         │ │ ││
-│  │  │ 🎭 ABAC Policies       │  │ - Auto-Optimize: ON           │ │ ││
-│  │  └────────────────────────┘  └───────────────────────────────┘ │ ││
+│  │  │ 🔒 Row-Level Security  │  │ Optimizations:                │ │ ││
+│  │  │ 🎭 ABAC Policies       │  │ - ZORDER(employee_id)         │ │ ││
+│  │  └────────────────────────┘  │ - Auto-Optimize: ON           │ │ ││
 │  └────────────────────────────────────────────────────────────────┘  ││
 │         ▲                                                             ││
 │         │                                                             ││
@@ -436,7 +388,6 @@ Cache Hit Rate:           >80%     ███████████████
 │  Layer 6 │ ┌────────────────────────────────────────────┐      │
 │  DATA    │ │ Data Masking & Classification               │      │
 │          │ │ • Dynamic data masking                      │      │
-│          │ │ • PII classification (Purview)              │      │
 │          │ │ • ABAC based on labels                      │      │
 │          │ └────────────────────────────────────────────┘      │
 │                                   │                             │

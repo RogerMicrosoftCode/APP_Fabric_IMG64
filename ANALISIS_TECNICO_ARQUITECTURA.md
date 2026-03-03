@@ -908,7 +908,7 @@ graph TD
     B -->|Token| C[Fabric Workspace]
     C -->|RLS| D[Delta Table Access]
     D -->|ABAC| E[OneLake Files]
-    E -->|Audit| F[Purview]
+    E -->|Audit| F[Audit Logs]
 ```
 
 ---
@@ -1076,49 +1076,7 @@ class SecureImageAPI(FabricImageAgentAPI):
         return super().get_employee_photo(employee_id, format)
 ```
 
----
 
-### 4.6 Integración con Microsoft Purview
-
-```python
-# ============================================================================
-# PURVIEW: Lineage y Data Classification
-# ============================================================================
-
-def register_with_purview():
-    """
-    Registra assets en Microsoft Purview
-    """
-    from pyapacheatlas.auth import ServicePrincipalAuthentication
-    from pyapacheatlas.core import PurviewClient, AtlasEntity
-    
-    # Autenticación
-    auth = ServicePrincipalAuthentication(
-        tenant_id="your-tenant-id",
-        client_id="your-client-id",
-        client_secret="your-client-secret"
-    )
-    
-    client = PurviewClient(
-        account_name="your-purview-account",
-        authentication=auth
-    )
-    
-    # Crear entidad para tabla de fotos
-    photo_table_entity = AtlasEntity(
-        name="employee_photo_registry",
-        typeName="spark_table",
-        qualified_name="hr_lakehouse.employee_photo_registry@fabric",
-        attributes={
-            "description": "Registro de metadatos de fotos de empleados",
-            "owner": "HR Data Team",
-            "classifications": ["PII", "Confidential"]
-        }
-    )
-    
-    # Registrar
-    client.upload_entities([photo_table_entity])
-```
 
 ---
 
@@ -1137,78 +1095,7 @@ def register_with_purview():
 
 ---
 
-### 5.2 Arquitectura de Alta Disponibilidad
-
-```mermaid
-graph TB
-    A[Load Balancer] -->|Region 1| B[Fabric Workspace Primary]
-    A -->|Region 2| C[Fabric Workspace Secondary]
-    B -->|Replication| D[OneLake Primary]
-    C -->|Replication| E[OneLake Secondary]
-    D <-->|Geo-Replication| E
-    D -->|CDN| F[Azure CDN]
-    E -->|CDN| F
-    F -->|Cache| G[Edge Locations]
-```
-
----
-
-### 5.3 Gestión de Lifecycle de Datos
-
-#### Estrategia de Archivado Automático
-
-```python
-# ============================================================================
-# LIFECYCLE: Archivado automático de fotos antiguas
-# ============================================================================
-
-def apply_lifecycle_policy():
-    """
-    Mueve fotos antiguas a tier de almacenamiento frío
-    """
-    # Identificar fotos no accedidas en 180 días
-    spark.sql("""
-        UPDATE hr_lakehouse.employee_photo_registry
-        SET 
-            storage_tier = 'cold',
-            archived_date = CURRENT_DATE
-        WHERE last_accessed < CURRENT_DATE - INTERVAL 180 DAYS
-          AND storage_tier = 'hot'
-          AND is_active = TRUE
-    """)
-    
-    # Mover archivos a carpeta de archivo
-    old_photos = spark.sql("""
-        SELECT employee_id, photo_url
-        FROM hr_lakehouse.employee_photo_registry
-        WHERE storage_tier = 'cold'
-          AND archived_date = CURRENT_DATE
-    """).collect()
-    
-    for photo in old_photos:
-        source_path = photo.photo_url.replace("https://onelake.dfs.fabric.microsoft.com/", "")
-        archive_path = source_path.replace("/employee_photos/", "/employee_photos/archive/")
-        
-        # Mover archivo
-        mssparkutils.fs.mv(source_path, archive_path)
-        
-        # Actualizar metadata
-        spark.sql(f"""
-            UPDATE hr_lakehouse.employee_photo_registry
-            SET photo_url = 'https://onelake.dfs.fabric.microsoft.com/{archive_path}'
-            WHERE employee_id = '{photo.employee_id}'
-              AND archived_date = CURRENT_DATE
-        """)
-    
-    print(f"✅ {len(old_photos)} fotos archivadas")
-
-# Programar ejecución mensual
-# (Usar Fabric Pipeline con Schedule Trigger)
-```
-
----
-
-### 5.4 Performance Benchmarking
+### 5.2 Performance Benchmarking
 
 ```python
 # ============================================================================
@@ -1271,56 +1158,6 @@ results = benchmark_photo_access()
 
 ---
 
-### 5.5 Monitoreo y Alertas
-
-```python
-# ============================================================================
-# MONITORING: Configuración de alertas
-# ============================================================================
-
-def setup_monitoring():
-    """
-    Configura KPIs y alertas
-    """
-    # KPI 1: Tasa de éxito de acceso a fotos
-    spark.sql("""
-        CREATE OR REPLACE VIEW hr_lakehouse.vw_photo_access_kpi AS
-        SELECT 
-            DATE(access_timestamp) AS date,
-            COUNT(*) AS total_accesses,
-            SUM(CASE WHEN success THEN 1 ELSE 0 END) AS successful_accesses,
-            ROUND(SUM(CASE WHEN success THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS success_rate_pct
-        FROM hr_lakehouse.photo_access_audit
-        GROUP BY DATE(access_timestamp)
-    """)
-    
-    # KPI 2: Latencia promedio
-    spark.sql("""
-        CREATE OR REPLACE VIEW hr_lakehouse.vw_photo_latency_kpi AS
-        SELECT 
-            DATE(access_timestamp) AS date,
-            access_type,
-            AVG(latency_ms) AS avg_latency_ms,
-            PERCENTILE(latency_ms, 0.95) AS p95_latency_ms,
-            MAX(latency_ms) AS max_latency_ms
-        FROM hr_lakehouse.photo_access_audit
-        GROUP BY DATE(access_timestamp), access_type
-    """)
-    
-    # KPI 3: Storage growth
-    spark.sql("""
-        CREATE OR REPLACE VIEW hr_lakehouse.vw_storage_growth_kpi AS
-        SELECT 
-            DATE_TRUNC('month', upload_timestamp) AS month,
-            COUNT(*) AS photos_uploaded,
-            SUM(file_size_bytes) / 1024 / 1024 / 1024 AS total_gb
-        FROM hr_lakehouse.employee_photo_registry
-        GROUP BY DATE_TRUNC('month', upload_timestamp)
-    """)
-```
-
----
-
 ## 📊 Diagrama de Arquitectura
 
 ### Arquitectura End-to-End
@@ -1360,13 +1197,11 @@ graph TB
         RLS[Row-Level<br/>Security]
         ABAC[Attribute-Based<br/>Access Control]
         AUD[Audit Logs]
-        PUR[Microsoft<br/>Purview]
         
         CT -.->|Policy| RLS
         LH_T -.->|Policy| ABAC
         WB -.->|Track| AUD
         AG -.->|Track| AUD
-        AUD -.->|Lineage| PUR
     end
     
     subgraph "Optimización"
@@ -1393,7 +1228,7 @@ graph TB
 
 ## 🎯 Recomendaciones Priorizadas
 
-### Prioridad 🔴 ALTA (Implementar en Sprint 1)
+### Prioridad 🔴 ALTA (Arquitectura 1)
 
 | # | Recomendación | Justificación | Esfuerzo | Impacto |
 |---|---------------|---------------|----------|---------|
@@ -1403,166 +1238,52 @@ graph TB
 | 4 | **Crear content_table para Workbooks** | Habilita visualización de imágenes | 1 día | Alto |
 | 5 | **Implementar audit logging** | Trazabilidad y compliance | 1 día | Medio |
 
-### Prioridad 🟡 MEDIA (Implementar en Sprint 2-3)
+### Prioridad 🟡 MEDIA (Arquitectura 2)
 
 | # | Recomendación | Justificación | Esfuerzo | Impacto |
 |---|---------------|---------------|----------|---------|
 | 6 | **Implementar API de acceso para agentes** | Estandariza consumo de imágenes | 2 días | Medio |
 | 7 | **Configurar caching con Redis** | Reduce latencia 60% | 2 días | Medio |
-| 8 | **Implementar lifecycle management** | Mejora eficiencia de almacenamiento a largo plazo | 1 día | Medio |
-| 9 | **Crear thumbnails automáticos** | Mejora UX en listados | 1 día | Medio |
-| 10 | **Integración con Purview** | Governance empresarial | 2 días | Bajo |
-
-### Prioridad 🟢 BAJA (Backlog)
-
-| # | Recomendación | Justificación | Esfuerzo | Impacto |
-|---|---------------|---------------|----------|---------|
-| 11 | **Implementar CDN global** | Performance para usuarios remotos | 3 días | Bajo |
-| 12 | **Geo-replication** | Alta disponibilidad multi-región | 3 días | Bajo |
-| 13 | **Machine Learning para detección de calidad** | Mejora calidad de fotos | 5 días | Bajo |
-| 14 | **Automatización de procesamiento batch** | Reduce overhead operativo | 2 días | Bajo |
+| 8 | **Crear thumbnails automáticos** | Mejora UX en listados | 1 día | Medio |
 
 ---
 
-## ✅ Validación de Production Readiness
+## ✅ Validación de Readiness
 
-### Checklist de Preparación para Producción
+### Checklist de Validación
 
 #### 🔒 Seguridad
 
 - [ ] Row-Level Security configurado y testeado
-- [ ] Attribute-Based Access Control implementado
-- [ ] Audit logging activo en todas las operaciones
-- [ ] Data classification aplicada (PII, Confidential)
-- [ ] Integración con Microsoft Purview
-- [ ] Encriptación en tránsito (HTTPS) y en reposo
-- [ ] Service Principal con least-privilege access
-- [ ] Secrets almacenados en Azure Key Vault
+- [ ] Audit logging activo en operaciones de acceso a fotos
+- [ ] Encriptación en tránsito (HTTPS)
 
 #### ⚡ Performance
 
 - [ ] Benchmarks ejecutados y documentados
 - [ ] Índices ZORDER aplicados en tablas Delta
-- [ ] Caching implementado (Redis o Fabric native)
+- [ ] Caching implementado (Redis)
 - [ ] Lazy loading configurado en Workbooks
-- [ ] Thumbnails generados para todas las imágenes
-- [ ] CDN configurado (opcional pero recomendado)
+- [ ] Thumbnails generados para las imágenes
 - [ ] Query optimization (partition pruning, predicate pushdown)
-
-#### 📊 Monitoreo y Observabilidad
-
-- [ ] KPIs definidos y dashboards creados
-- [ ] Alertas configuradas para:
-  - [ ] Tasa de éxito < 95%
-  - [ ] Latencia P95 > 500ms
-  - [ ] Storage growth > 10GB/mes
-  - [ ] Failed pipeline runs
-- [ ] Logs centralizados (Application Insights o Log Analytics)
-- [ ] Tracing distribuido para troubleshooting
 
 #### 🔄 Operaciones
 
 - [ ] Pipeline de ingesta automatizado (scheduled)
-- [ ] Error handling y retry logic implementado
+- [ ] Error handling implementado
 - [ ] Backup strategy definida (OneLake auto-backup)
-- [ ] Disaster recovery plan documentado
-- [ ] Runbook para incidentes comunes
-- [ ] SLA definido (99.9% uptime)
-
-#### 📈 Escalabilidad
-
-- [ ] Load testing ejecutado (1000+ concurrent users)
-- [ ] Auto-scaling configurado
-- [ ] Lifecycle policies para archiving
-- [ ] Capacity planning para 3 años
-- [ ] Storage quotas y throttling configurados
 
 #### 🧪 Testing
 
-- [ ] Unit tests para funciones de procesamiento
 - [ ] Integration tests para pipeline end-to-end
 - [ ] UAT completado con usuarios reales
-- [ ] Security penetration testing
 - [ ] Performance testing bajo carga
 
 #### 📚 Documentación
 
-- [ ] Arquitectura documentada (este documento)
-- [ ] API documentation (Swagger/OpenAPI)
-- [ ] Runbooks operacionales
+- [ ] Arquitectura documentada
+- [ ] API documentation
 - [ ] Training materials para usuarios
-- [ ] Change management process
-
----
-
-## 📋 Plan de Implementación
-
-### Sprint 1 (2 semanas): Foundation
-
-**Objetivos:**
-- Migrar arquitectura de Base64 a Files
-- Implementar seguridad básica
-- Habilitar Workbooks
-
-**Tareas:**
-1. Crear estructura de carpetas en Lakehouse Files
-2. Desarrollar pipeline de ingesta desde SuccessFactors
-3. Crear tabla `employee_photo_registry`
-4. Implementar Row-Level Security
-5. Generar `content_table` para Workbooks
-6. Configurar Workbook con template JSON
-7. UAT con 10 usuarios piloto
-
-**Entregables:**
-- Pipeline funcional
-- Workbook operativo
-- Documentación de seguridad
-
----
-
-### Sprint 2 (2 semanas): Agent Integration
-
-**Objetivos:**
-- Habilitar consumo por agentes IA
-- Implementar caching
-- Optimizar performance
-
-**Tareas:**
-1. Desarrollar `FabricImageAgentAPI`
-2. Integrar con Fabric Data Agent
-3. Implementar Redis caching
-4. Crear thumbnails automáticos
-5. Configurar audit logging
-6. Performance testing
-7. UAT con agentes IA
-
-**Entregables:**
-- API documentada (Swagger)
-- Agentes consumiendo imágenes
-- Benchmarks de performance
-
----
-
-### Sprint 3 (1 semana): Governance & Monitoring
-
-**Objetivos:**
-- Implementar governance completo
-- Configurar monitoreo
-- Preparar para producción
-
-**Tareas:**
-1. Integración con Microsoft Purview
-2. Configurar lifecycle management
-3. Crear dashboards de monitoring
-4. Configurar alertas
-5. Documentación final
-6. Security review
-7. Go/No-Go decision
-
-**Entregables:**
-- Sistema production-ready
-- Documentación completa
-- Validación técnica completada
 
 ---
 
@@ -1586,8 +1307,7 @@ graph TB
 3. **NO omitir thumbnails** (impacta performance severamente)
 4. **NO exponer OneLake URLs sin autenticación**
 5. **NO ignorar data classification** (riesgo regulatorio)
-6. **NO omitir lifecycle management** (degradación de performance)
-7. **NO sobre-optimizar prematuramente** (YAGNI principle)
+6. **NO sobre-optimizar prematuramente** (YAGNI principle)
 
 ---
 
@@ -1599,7 +1319,6 @@ graph TB
 - [Delta Lake on Fabric](https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-and-delta-tables)
 - [OneLake Security](https://learn.microsoft.com/en-us/fabric/onelake/onelake-security)
 - [Fabric Data Agent](https://learn.microsoft.com/en-us/fabric/data-science/how-to-use-fabric-data-agent)
-- [Microsoft Purview](https://learn.microsoft.com/en-us/purview/)
 
 ### APIs y SDKs
 
@@ -1630,14 +1349,12 @@ Esta arquitectura proporciona una **solución empresarial robusta** para la gest
 
 ✅ **Performance:** Latencias <100ms, escalabilidad ilimitada  
 ✅ **Eficiencia:** Optimización de recursos de almacenamiento  
-✅ **Seguridad:** RLS, ABAC, audit completo, Purview integration  
+✅ **Seguridad:** RLS, audit completo  
 ✅ **Flexibilidad:** Multi-canal (Workbooks, Agents, APIs)  
-✅ **Governance:** Clasificación de datos, lifecycle management  
-✅ **Production-Ready:** Monitoring, alertas, disaster recovery  
 
-La implementación en **3 sprints (5 semanas)** permite una transición gradual con validación continua.
+Implementación en **2 arquitecturas** permite validación continua.
 
-**Recomendación final:** Proceder con implementación en Sprint 1 priorizando las recomendaciones 🔴 ALTA.
+**Recomendación final:** Proceder con Arquitectura 1 priorizando las recomendaciones 🔴 ALTA.
 
 ---
 

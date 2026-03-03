@@ -49,7 +49,7 @@ Resumen ejecutivo visual con comparativas, KPIs y quick reference cards.
 🏗️ **Migración a arquitectura empresarial** que separa binarios de metadata  
 📊 **Optimización significativa de almacenamiento**  
 ⚡ **Mejora de performance 5x** en queries  
-🔒 **Governance completo**: RLS, ABAC, Microsoft Purview  
+🔒 **Governance completo**: RLS, ABAC  
 🤖 **API nativa para agentes de IA** con caching  
 🌍 **Escalabilidad ilimitada** (50K+ empleados sin refactoring)  
 
@@ -546,7 +546,7 @@ SuccessFactors → Pipeline → Lakehouse Files (binarios)
 **Beneficios:**
 - 🎯 **Optimización de recursos** en storage
 - ⚡ **5x performance improvement** en queries
-- 🔒 **Enterprise governance** (RLS, ABAC, Purview)
+- 🔒 **Enterprise governance** (RLS, ABAC)
 - 🤖 **AI-ready API** con caching (Redis)
 - 🌍 **Unlimited scalability** (50K+ empleados)
 - 🔄 **Versioning** de imágenes
@@ -560,8 +560,8 @@ Análisis técnico completo con código de implementación
 📐 **[ARQUITECTURA_DIAGRAMAS.md](./ARQUITECTURA_DIAGRAMAS.md)**  
 Diagramas Mermaid detallados de la arquitectura
 
-🎯 **[PLAN_IMPLEMENTACION_EJECUTIVO.md](./PLAN_IMPLEMENTACION_EJECUTIVO.md)**  
-Plan de 5 semanas con recomendaciones priorizadas
+🔧 **[GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md)**  
+Guía técnica paso a paso - 2 arquitecturas
 
 📊 **[RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md)**  
 Comparativas visuales y quick reference (START HERE)
@@ -571,7 +571,7 @@ Comparativas visuales y quick reference (START HERE)
 1. **Lee:** [RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md) (10 min)
 2. **Revisa:** [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md) (30 min)
 3. **Planifica:** Revisa arquitectura técnica y requerimientos
-4. **Implementa:** Fase 1 → Fase 2 → Fase 3 → Go-Live (5 semanas)
+4. **Implementa:** Arquitectura 1 → Arquitectura 2
 
 ---
 

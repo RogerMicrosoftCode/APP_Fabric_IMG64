@@ -44,7 +44,6 @@
 - ✅ Diagramas Mermaid de arquitectura end-to-end
 - ✅ Flujos de datos visuales
 - ✅ Arquitectura de seguridad y governance
-- ✅ Alta disponibilidad y DR
 - ✅ Decisiones de arquitectura (ADRs)
 
 **Cuándo leerlo:** Para entender la visión completa del sistema
@@ -54,12 +53,12 @@
 ### 3️⃣ OPTIONAL → [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md) **(30 min)**
 
 **Qué encontrarás:**
-- ✅ Roadmap de implementación en 3 fases
+- ✅ Roadmap de implementación en 2 arquitecturas
 - ✅ Pasos técnicos detallados
 - ✅ Production readiness checklist
-- ✅ Criterios de aceptación por fase
+- ✅ Criterios de aceptación por arquitectura
 
-**Cuándo leerlo:** Para planificación de sprints
+**Cuándo leerlo:** Para planificación técnica
 
 ---
 
@@ -71,7 +70,7 @@
 - ✅ Arquitectura de almacenamiento detallada
 - ✅ Integración con Workbooks (código completo)
 - ✅ API para agentes de IA (implementación)
-- ✅ Seguridad y governance (RLS, ABAC, Purview)
+- ✅ Seguridad y governance (RLS, ABAC)
 - ✅ Optimización y escalabilidad
 - ✅ Production readiness validation
 
@@ -88,7 +87,6 @@
   - Flujo de Workbooks
   - Flujo de Agentes IA
   - Seguridad multi-capa
-  - Alta disponibilidad
   - Optimización de performance
   
 **Cuándo leerlo:** Para validar diseño con equipo técnico
@@ -195,7 +193,6 @@
 - ✅ Attribute-Based Access Control (ABAC)
 - ✅ Data masking strategies
 - ✅ Audit logging completo
-- ✅ Microsoft Purview integration
 - ✅ Encryption at-rest y in-transit
 
 ---
@@ -270,7 +267,7 @@
    ↓
 4. API_REFERENCE.md (referencia rápida) (15 min)
    ↓
-5. IMPLEMENTAR: Sprint 1 → 2 → 3
+5. IMPLEMENTAR: Arquitectura 1 → Arquitectura 2
 ```
 
 ---
@@ -308,7 +305,7 @@
 │                  PROJECT WORKFLOW                            │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
-│  Week -1: DISCOVERY & ALIGNMENT                             │
+│  DISCOVERY & ALIGNMENT                                      │
 │  ┌────────────────────────────────────────────────────┐     │
 │  │ 1. Stakeholders leen RESUMEN_VISUAL.md            │     │
 │  │ 2. PM lee GUIA_IMPLEMENTACION_TECNICA.md          │     │
@@ -317,28 +314,19 @@
 │  └────────────────────────────────────────────────────┘     │
 │           │                                                  │
 │           ▼                                                  │
-│  Week 1-2: SPRINT 1 (Foundation)                            │
+│  ARQUITECTURA 1 (Foundation)                                │
 │  ┌────────────────────────────────────────────────────┐     │
-│  │ Developers: Implementar tareas según PLAN         │     │
-│  │ QA: Preparar test cases según Checklist           │     │
+│  │ Developers: Implementar lakehouse + pipeline      │     │
+│  │ QA: Preparar test cases                           │     │
 │  │ Security: Review RLS implementation                │     │
 │  └────────────────────────────────────────────────────┘     │
 │           │                                                  │
 │           ▼                                                  │
-│  Week 3-4: SPRINT 2 (Agent Integration)                     │
+│  ARQUITECTURA 2 (Agent Integration)                         │
 │  ┌────────────────────────────────────────────────────┐     │
-│  │ Developers: API + caching según código en ANALISIS │     │
-│  │ QA: Performance testing (benchmarks)               │     │
+│  │ Developers: API + caching                         │     │
+│  │ QA: Performance testing                           │     │
 │  │ Arquitecto: Review implementación                  │     │
-│  └────────────────────────────────────────────────────┘     │
-│           │                                                  │
-│           ▼                                                  │
-│  Week 5: SPRINT 3 (Governance & Go-Live)                    │
-│  ┌────────────────────────────────────────────────────┐     │
-│  │ Security: Purview setup + audit validation         │     │
-│  │ QA: Load testing + DR drill                        │     │
-│  │ PM: Production readiness review                    │     │
-│  │ ALL: Go-live + hypercare                           │     │
 │  └────────────────────────────────────────────────────┘     │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
@@ -361,7 +349,7 @@
 
 ## ✅ Checklist: ¿Estás listo para implementar?
 
-Antes de empezar Sprint 1, verifica que hayas:
+Antes de empezar la implementación, verifica que hayas:
 
 - [ ] Leído [RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md)
 - [ ] Leído [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md)
@@ -370,10 +358,10 @@ Antes de empezar Sprint 1, verifica que hayas:
 - [ ] Workspace de Fabric creado y configurado
 - [ ] Acceso a SuccessFactors API (credentials en Key Vault)
 - [ ] Azure Key Vault configurado para secrets
-- [ ] Plan de implementación revisado (5 semanas)
-- [ ] Production readiness criteria acordados (>90% score)
+- [ ] Plan de implementación revisado
+- [ ] Production readiness criteria acordados
 
-**¿Todo OK?** → Procede a Fase 1 (Semana 1-2)
+**¿Todo OK?** → Procede a Arquitectura 1
 
 ---
 

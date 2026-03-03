@@ -8,16 +8,14 @@
 
 ## 📑 Tabla de Contenidos
 
-1. [Fase 1: Foundation & Migration](#fase-1-foundation--migration)
-2. [Fase 2: Agent Integration & Optimization](#fase-2-agent-integration--optimization)
-3. [Fase 3: Governance & Production Readiness](#fase-3-governance--production-readiness)
-4. [Troubleshooting](#troubleshooting)
+1. [Arquitectura 1: Foundation & Migration](#arquitectura-1-foundation--migration)
+2. [Arquitectura 2: Agent Integration & Optimization](#arquitectura-2-agent-integration--optimization)
+3. [Troubleshooting](#troubleshooting)
 
 ---
 
-## Fase 1: Foundation & Migration
+## Arquitectura 1: Foundation & Migration
 
-**Duración estimada:** 2 semanas  
 **Objetivo:** Migrar de Base64 a Lakehouse Files con metadata registry funcional
 
 ### 1.1 Crear Estructura de Carpetas en Lakehouse
@@ -535,9 +533,8 @@ else:
 
 ---
 
-## Fase 2: Agent Integration & Optimization
+## Arquitectura 2: Agent Integration & Optimization
 
-**Duración estimada:** 2 semanas  
 **Objetivo:** API funcional para agentes IA con caching layer
 
 ### 2.1 Desarrollar API para Agentes IA
@@ -963,7 +960,7 @@ print(f"\nMejora: {round((1 - results_cached['p95_ms']/results_uncached['p95_ms'
 
 ---
 
-### 2.5 Criterios de Aceptación Fase 2
+### 2.5 Criterios de Aceptación Arquitectura 2
 
 - [ ] **API funcional:** Todos los métodos de `FabricImageAgentAPI` funcionan
 - [ ] **Cache operativo:** Redis configurado y hit rate >75%
@@ -974,7 +971,7 @@ print(f"\nMejora: {round((1 - results_cached['p95_ms']/results_uncached['p95_ms'
 
 ---
 
-## Fase 3: Governance & Production Readiness
+## Troubleshooting
 
 **Duración estimada:** 1 semana  
 **Objetivo:** Sistema production-ready con governance completo
@@ -1040,68 +1037,7 @@ SELECT COUNT(*) FROM hr_lakehouse.employee_photo_registry;
 
 ---
 
-### 3.2 Integración con Microsoft Purview
-
-```python
-# ============================================================================
-# PASO 12: Purview Integration
-# ============================================================================
-
-from azure.purview.catalog import PurviewCatalogClient
-from azure.identity import DefaultAzureCredential
-
-# Setup
-credential = DefaultAzureCredential()
-purview_endpoint = "https://your-purview.purview.azure.com"
-client = PurviewCatalogClient(endpoint=purview_endpoint, credential=credential)
-
-def register_assets_in_purview():
-    """
-    Registra assets en Purview para data governance
-    """
-    # Definir asset para employee_photo_registry
-    asset = {
-        "typeName": "azure_datalake_gen2_resource_set",
-        "attributes": {
-            "qualifiedName": "https://onelake.dfs.fabric.microsoft.com/hr_lakehouse/employee_photo_registry",
-            "name": "employee_photo_registry",
-            "description": "Employee photo metadata registry",
-            "classifications": [
-                {"typeName": "MICROSOFT.PERSONAL.PII"},
-                {"typeName": "MICROSOFT.GOVERNMENT.EU_GDPR"}
-            ],
-            "contacts": [
-                {
-                    "contactType": "Expert",
-                    "emailAddress": "datagovernance@contoso.com"
-                }
-            ]
-        }
-    }
-    
-    # Crear asset
-    response = client.entity.create_or_update(entity=asset)
-    print(f"✅ Asset registrado: {response['guid']}")
-    
-    # Aplicar lineage (SuccessFactors → Registry → Workbook)
-    lineage = {
-        "typeName": "Process",
-        "attributes": {
-            "name": "SuccessFactors Photo Ingestion",
-            "inputs": [{"typeName": "successfactors_employee", "guid": "..."}],
-            "outputs": [{"typeName": "azure_datalake_gen2", "guid": response['guid']}]
-        }
-    }
-    
-    client.entity.create_or_update(entity=lineage)
-    print("✅ Lineage configurado")
-
-register_assets_in_purview()
-```
-
----
-
-### 3.3 Lifecycle Management Automation
+### 3.2 Lifecycle Management Automation
 
 ```python
 # ============================================================================
@@ -1257,12 +1193,8 @@ alerts:
 - [ ] Attribute-Based Access Control (ABAC) implementado
 - [ ] Audit logging activo (100% coverage)
 - [ ] Data classification aplicada (PII, Confidential)
-- [ ] Microsoft Purview integration completa
 - [ ] Encriptación at-rest y in-transit habilitada
-- [ ] Service Principal con least-privilege access
-- [ ] Secrets en Azure Key Vault (zero hardcoded credentials)
-- [ ] Penetration testing ejecutado y issues resueltos
-- [ ] GDPR compliance validado
+- [ ] Secrets management implementado
 
 #### Performance (25% weighting)
 - [ ] Cache hit rate >80%
@@ -1271,13 +1203,9 @@ alerts:
 - [ ] Batch operations (20 photos) <1s
 - [ ] Database indexes optimizados (ZORDER)
 - [ ] Thumbnail generation <500ms per image
-- [ ] CDN configurado (opcional pero recomendado)
-- [ ] Load testing: 1000 concurrent users, <5% error rate
 
 #### Reliability (20% weighting)
-- [ ] Backup strategy definida (RPO <1h, RTO <4h)
-- [ ] Disaster recovery plan tested
-- [ ] High availability configurado (multi-region)
+- [ ] Backup strategy definida
 - [ ] Monitoring dashboards creados
 - [ ] Alerts configuradas (latency, errors, capacity)
 - [ ] Runbooks documentados (incident response)
@@ -1369,40 +1297,13 @@ print(f"Total keys: {stats['total_keys']}")
 
 ---
 
-### Problema: Purview no muestra lineage
-
-**Diagnóstico:**
-```python
-# Verificar asset registrado
-assets = client.entity.query_using_dsl(
-    "from DataSet where name = 'employee_photo_registry'"
-)
-print(assets)
-```
-
-**Soluciones:**
-1. Re-ejecutar `register_assets_in_purview()`
-2. Validar credentials de Purview
-3. Verificar permissions en Purview (Data Curator role requerido)
-
----
-
-## Resumen de Comandos Críticos
+## Comandos Útiles
 
 ```bash
-# Validación rápida del sistema
-python validate_all_phases.py
-
-# Monitorear performance en tiempo real
-tail -f /logs/api_latency.log
-
-# Invalidar cache para un empleado
+# Invalidar cache para un empleado específico
 python invalidate_cache.py --employee_id 102025
 
-# Trigger manual de archiving
-python archive_old_photos.py --dry-run
-
-# Verificar health del sistema
+# Verificar performance del API
 curl https://api.fabric.com/health
 ```
 
