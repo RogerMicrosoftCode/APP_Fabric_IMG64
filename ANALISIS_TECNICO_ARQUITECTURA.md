@@ -84,18 +84,18 @@ Su organización necesita una arquitectura empresarial para:
         └── is_active
 ```
 
-#### Justificación Técnica
+#### Comparativa Técnica
 
 | Criterio | Files Storage | Delta Embedding | Blob External |
 |----------|---------------|-----------------|---------------|
-| **Costo por GB** | $0.023/GB | $0.18/GB | $0.018/GB |
+| **Eficiencia Storage** | Alta | Baja | Muy Alta |
 | **Query Performance** | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ |
 | **Latencia** | <50ms | >200ms | <100ms |
 | **Governance** | Nativo Fabric | Nativo Fabric | Requiere config |
 | **Versionamiento** | Manual | Automático | Manual |
 | **Integration** | Seamless | Seamless | Requiere SAS |
 
-**Decisión:** Lakehouse Files combina lo mejor de ambos mundos.
+**Decisión:** Lakehouse Files ofrece el mejor balance entre performance, integración y governance.
 
 ---
 
@@ -1134,7 +1134,6 @@ def register_with_purview():
 | **Fotos totales** | 5,000 | 15,000 | 50,000 | 100,000 |
 | **Storage (GB)** | 2.5 | 7.5 | 25 | 50 |
 | **Queries/día** | 500 | 2,000 | 8,000 | 20,000 |
-| **Costo mensual** | $60 | $180 | $600 | $1,200 |
 
 ---
 
@@ -1154,9 +1153,9 @@ graph TB
 
 ---
 
-### 5.3 Optimización de Costos
+### 5.3 Gestión de Lifecycle de Datos
 
-#### Estrategia de Lifecycle Management
+#### Estrategia de Archivado Automático
 
 ```python
 # ============================================================================
@@ -1398,7 +1397,7 @@ graph TB
 
 | # | Recomendación | Justificación | Esfuerzo | Impacto |
 |---|---------------|---------------|----------|---------|
-| 1 | **Migrar de Base64 a Lakehouse Files** | Reduce storage cost 70%, mejora performance 5x | 3 días | Alto |
+| 1 | **Migrar de Base64 a Lakehouse Files** | Mejora performance 5x, optimiza almacenamiento | 3 días | Alto |
 | 2 | **Implementar tabla employee_photo_registry** | Foundation para governance y escalabilidad | 2 días | Alto |
 | 3 | **Configurar Row-Level Security** | Cumplimiento regulatorio (GDPR, SOC2) | 1 día | Alto |
 | 4 | **Crear content_table para Workbooks** | Habilita visualización de imágenes | 1 día | Alto |
@@ -1410,7 +1409,7 @@ graph TB
 |---|---------------|---------------|----------|---------|
 | 6 | **Implementar API de acceso para agentes** | Estandariza consumo de imágenes | 2 días | Medio |
 | 7 | **Configurar caching con Redis** | Reduce latencia 60% | 2 días | Medio |
-| 8 | **Implementar lifecycle management** | Optimiza costos a largo plazo | 1 día | Medio |
+| 8 | **Implementar lifecycle management** | Mejora eficiencia de almacenamiento a largo plazo | 1 día | Medio |
 | 9 | **Crear thumbnails automáticos** | Mejora UX en listados | 1 día | Medio |
 | 10 | **Integración con Purview** | Governance empresarial | 2 días | Bajo |
 
@@ -1563,7 +1562,7 @@ graph TB
 **Entregables:**
 - Sistema production-ready
 - Documentación completa
-- Sign-off de stakeholders
+- Validación técnica completada
 
 ---
 
@@ -1587,31 +1586,12 @@ graph TB
 3. **NO omitir thumbnails** (impacta performance severamente)
 4. **NO exponer OneLake URLs sin autenticación**
 5. **NO ignorar data classification** (riesgo regulatorio)
-6. **NO omitir lifecycle management** (costos se disparan)
+6. **NO omitir lifecycle management** (degradación de performance)
 7. **NO sobre-optimizar prematuramente** (YAGNI principle)
 
 ---
 
-## 📞 Contacto y Soporte
-
-### Equipo de Arquitectura
-
-| Rol | Responsabilidad | Contacto |
-|-----|-----------------|----------|
-| **Lead Architect** | Decisiones arquitectónicas | architect@contoso.com |
-| **Data Engineer** | Implementación de pipelines | dataeng@contoso.com |
-| **Security Architect** | Governance y compliance | security@contoso.com |
-| **AI Engineer** | Integración con agentes | aieng@contoso.com |
-
-### Escalamiento de Issues
-
-1. **P1 (Critical):** Workbooks down, agentes sin acceso → Slack #fabric-oncall
-2. **P2 (High):** Performance degradado, pipeline failures → Jira ticket + email
-3. **P3 (Medium):** Feature requests, optimizations → Backlog refinement
-
----
-
-## 📚 Referencias y Recursos
+##  Referencias y Recursos
 
 ### Documentación Microsoft
 
@@ -1649,7 +1629,7 @@ graph TB
 Esta arquitectura proporciona una **solución empresarial robusta** para la gestión de imágenes en Microsoft Fabric, optimizada para:
 
 ✅ **Performance:** Latencias <100ms, escalabilidad ilimitada  
-✅ **Costos:** Reducción del 70% vs. embedding en Delta  
+✅ **Eficiencia:** Optimización de recursos de almacenamiento  
 ✅ **Seguridad:** RLS, ABAC, audit completo, Purview integration  
 ✅ **Flexibilidad:** Multi-canal (Workbooks, Agents, APIs)  
 ✅ **Governance:** Clasificación de datos, lifecycle management  

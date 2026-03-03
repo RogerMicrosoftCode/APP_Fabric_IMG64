@@ -239,7 +239,6 @@ graph TB
     
     subgraph "Storage Metrics"
         direction LR
-        COST[💰 Cost per GB/month<br/>Hot: $0.023<br/>Warm: $0.015<br/>Cold: $0.008]
         
         PERF[⚡ Access Latency<br/>Hot: <50ms<br/>Warm: <200ms<br/>Cold: <5s]
         
@@ -608,7 +607,7 @@ graph LR
     %% Métricas de Optimización
     subgraph "Performance Metrics"
         direction TB
-        METRICS[Targets Achieved<br/>-------------<br/>📊 Cache Hit Rate: >80%<br/>⏱️ P95 Latency: <200ms<br/>💰 Cost Reduction: 70%<br/>🔄 Query Throughput: 10K/min]
+        METRICS[Targets Achieved<br/>-------------<br/>📊 Cache Hit Rate: >80%<br/>⏱️ P95 Latency: <200ms<br/> Query Throughput: 10K/min]
     end
     
     L2 -.->|Report| METRICS
@@ -630,7 +629,7 @@ graph LR
 
 | Aspecto | Arquitectura Actual (Base64) | Arquitectura Propuesta (Files) | Mejora |
 |---------|------------------------------|--------------------------------|--------|
-| **Storage Cost** | $0.18/GB (Delta) | $0.023/GB (Files) | **-87%** 💰 |
+| **Eficiencia Storage** | Baja (Delta) | Alta (Files) | **Muy superior** 💡 |
 | **Query Latency** | 250ms (avg) | 50ms (avg) | **-80%** ⚡ |
 | **Scalability** | Limited (2GB max table) | Unlimited | **∞** 📈 |
 | **Cache Hit Rate** | N/A | >80% | **New** 🎯 |
@@ -650,10 +649,10 @@ graph LR
 **Contexto:**
 - Imágenes ocupan 500KB promedio
 - 5,000 empleados actuales, proyección 50,000 en 5 años
-- Costos de storage son críticos
+- Eficiencia de almacenamiento es crítica
 
 **Consecuencias:**
-- ✅ Reducción de costos 87%
+- ✅ Optimización significativa de almacenamiento
 - ✅ Mejor performance de queries
 - ✅ Escalabilidad ilimitada
 - ❌ Complejidad adicional de gestión de archivos
@@ -674,7 +673,7 @@ graph LR
 - ✅ Reducción de latencia 60%
 - ✅ Menor carga en Lakehouse
 - ✅ Mejor experiencia de usuario
-- ❌ Costo adicional Redis (~$200/mes)
+- ❌ Infraestructura adicional requerida (Redis)
 - ❌ Cache invalidation complexity
 
 ---
@@ -692,7 +691,7 @@ graph LR
 - ✅ Alta disponibilidad garantizada
 - ✅ Mejor latencia para usuarios remotos
 - ✅ Compliance con regulaciones
-- ❌ Costo adicional storage replication (+30%)
+- ❌ Overhead de almacenamiento replicado
 - ❌ Complejidad operacional
 
 ---
@@ -706,7 +705,7 @@ graph LR
 | 🔐 | Seguridad / Autenticación |
 | ⚡ | Performance / Optimización |
 | 🔄 | Sincronización / Replicación |
-| 💰 | Costos |
+
 | 📈 | Escalabilidad |
 | 🎯 | KPI / Métrica |
 | ⚠️ | Alerta / Warning |

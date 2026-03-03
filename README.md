@@ -22,7 +22,7 @@ Resumen ejecutivo visual con comparativas, KPIs y quick reference cards.
 | **[🗺️ GUIA_NAVEGACION.md](./GUIA_NAVEGACION.md)** | 🧭 Índice visual para navegar entre todos los documentos | **START HERE** - Todos |
 | **[ANALISIS_TECNICO_ARQUITECTURA.md](./ANALISIS_TECNICO_ARQUITECTURA.md)** | 🏗️ Análisis técnico completo de la arquitectura propuesta con código de implementación | Arquitectos, Data Engineers |
 | **[ARQUITECTURA_DIAGRAMAS.md](./ARQUITECTURA_DIAGRAMAS.md)** | 📐 Diagramas detallados Mermaid: flujos, secuencias, arquitectura end-to-end | Todos los stakeholders |
-| **[PLAN_IMPLEMENTACION_EJECUTIVO.md](./PLAN_IMPLEMENTACION_EJECUTIVO.md)** | 🎯 Roadmap de 5 semanas, recomendaciones priorizadas, checklist de production readiness | Gerentes, PMs, Ejecutivos |
+| **[GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md)** | 🔧 Guía paso a paso de implementación técnica en 3 fases | Developers, Data Engineers |
 | **[RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md)** | 📊 Comparativas visuales, KPIs, quick reference, troubleshooting | Todos (entrada recomendada) |
 
 ### 📂 Documentos de Implementación (Código Actual - Base64)
@@ -47,7 +47,7 @@ Resumen ejecutivo visual con comparativas, KPIs y quick reference cards.
 
 ### Arquitectura Target: Lakehouse Files + Metadata (v2.0) 🆕
 🏗️ **Migración a arquitectura empresarial** que separa binarios de metadata  
-📊 **Reducción de costos del 70%** en storage  
+📊 **Optimización significativa de almacenamiento**  
 ⚡ **Mejora de performance 5x** en queries  
 🔒 **Governance completo**: RLS, ABAC, Microsoft Purview  
 🤖 **API nativa para agentes de IA** con caching  
@@ -514,7 +514,7 @@ La **arquitectura actual (v1.0)** con Base64 embebido en Delta Tables tiene limi
 
 | Limitación | Impacto |
 |------------|---------|
-| **Alto costo de storage** | $0.18/GB (Delta) vs $0.023/GB (Files) = **-87% savings** |
+| **Ineficiencia de almacenamiento** | Uso elevado de recursos Delta vs Files |
 | **Performance degradado** | Queries lentas (250ms) vs target (50ms) = **5x slower** |
 | **Escalabilidad limitada** | Max 2GB por tabla = bloqueante para >10K empleados |
 | **No preparado para IA** | Sin API nativa, latencia alta para agentes |
@@ -532,7 +532,7 @@ La **arquitectura actual (v1.0)** con Base64 embebido en Delta Tables tiene limi
 - Tienes <1,000 empleados
 - Performance actual es aceptable
 - Solo necesitas Workbooks (no agentes de IA)
-- Presupuesto limitado ($29K one-time investment para v2.0)
+- Implementación simple es prioridad
 
 ### Arquitectura v2.0: Lakehouse Files + Metadata
 
@@ -544,7 +544,7 @@ SuccessFactors → Pipeline → Lakehouse Files (binarios)
 ```
 
 **Beneficios:**
-- 🎯 **70% cost reduction** en storage
+- 🎯 **Optimización de recursos** en storage
 - ⚡ **5x performance improvement** en queries
 - 🔒 **Enterprise governance** (RLS, ABAC, Purview)
 - 🤖 **AI-ready API** con caching (Redis)
@@ -566,22 +566,12 @@ Plan de 5 semanas con recomendaciones priorizadas
 📊 **[RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md)**  
 Comparativas visuales y quick reference (START HERE)
 
-### ROI de Migración
-
-| Métrica | Valor |
-|---------|-------|
-| **Inversión inicial** | $29,325 (one-time) |
-| **Costo adicional mensual** | +$37 |
-| **Beneficios (3 años)** | $110,000 |
-| **ROI** | **260%** |
-| **Payback period** | **8 meses** |
-
 ### Next Steps
 
 1. **Lee:** [RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md) (10 min)
-2. **Revisa:** [PLAN_IMPLEMENTACION_EJECUTIVO.md](./PLAN_IMPLEMENTACION_EJECUTIVO.md) (30 min)
-3. **Decide:** Go/No-Go con stakeholders
-4. **Implementa:** Sprint 1 → Sprint 2 → Sprint 3 → Go-Live (5 semanas)
+2. **Revisa:** [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md) (30 min)
+3. **Planifica:** Revisa arquitectura técnica y requerimientos
+4. **Implementa:** Fase 1 → Fase 2 → Fase 3 → Go-Live (5 semanas)
 
 ---
 

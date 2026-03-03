@@ -32,35 +32,34 @@
 - ✅ Comparativa visual: Antes vs. Después
 - ✅ KPIs y métricas de éxito
 - ✅ Quick decision tree
-- ✅ ROI y análisis de costos
-- ✅ Quick reference card
+- ✅ Quick reference card tecnológica
 
-**Cuándo leerlo:** Primera reunión de kick-off
-
----
-
-### 2️⃣ THEN → [PLAN_IMPLEMENTACION_EJECUTIVO.md](./PLAN_IMPLEMENTACION_EJECUTIVO.md) **(30 min)**
-
-**Qué encontrarás:**
-- ✅ Roadmap de 5 semanas (Sprint 1, 2, 3)
-- ✅ Recomendaciones priorizadas (🔴 Alta, 🟡 Media, 🟢 Baja)
-- ✅ Production readiness checklist
-- ✅ Análisis de ROI detallado
-- ✅ Plan de comunicación con stakeholders
-
-**Cuándo leerlo:** Antes de aprobar presupuesto y recursos
+**Cuándo leerlo:** Primera revisión del proyecto
 
 ---
 
-### 3️⃣ OPTIONAL → [ARQUITECTURA_DIAGRAMAS.md](./ARQUITECTURA_DIAGRAMAS.md) **(15 min)**
+### 2️⃣ THEN → [ARQUITECTURA_DIAGRAMAS.md](./ARQUITECTURA_DIAGRAMAS.md) **(20 min)**
 
 **Qué encontrarás:**
 - ✅ Diagramas Mermaid de arquitectura end-to-end
 - ✅ Flujos de datos visuales
 - ✅ Arquitectura de seguridad y governance
 - ✅ Alta disponibilidad y DR
+- ✅ Decisiones de arquitectura (ADRs)
 
-**Cuándo leerlo:** Para presentar en steering committees
+**Cuándo leerlo:** Para entender la visión completa del sistema
+
+---
+
+### 3️⃣ OPTIONAL → [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md) **(30 min)**
+
+**Qué encontrarás:**
+- ✅ Roadmap de implementación en 3 fases
+- ✅ Pasos técnicos detallados
+- ✅ Production readiness checklist
+- ✅ Criterios de aceptación por fase
+
+**Cuándo leerlo:** Para planificación de sprints
 
 ---
 
@@ -96,15 +95,15 @@
 
 ---
 
-### 3️⃣ REFERENCE → [PLAN_IMPLEMENTACION_EJECUTIVO.md](./PLAN_IMPLEMENTACION_EJECUTIVO.md) **(30 min)**
+### 3️⃣ REFERENCE → [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md) **(30 min)**
 
 **Qué encontrarás:**
-- ✅ Tareas detalladas con esfuerzo estimado
-- ✅ Dependencias entre tareas
-- ✅ Criterios de aceptación por sprint
-- ✅ Checklist exhaustivo de production readiness
+- ✅ Pasos de implementación en 3 fases
+- ✅ Criterios de aceptación por fase
+- ✅ Scripts de validación automatizada
+- ✅ Guía de troubleshooting
 
-**Cuándo leerlo:** Durante planificación de sprints
+**Cuándo leerlo:** Durante planificación e implementación
 
 ---
 
@@ -161,16 +160,16 @@
 
 ## 📊 Para QA y Testing
 
-### 1️⃣ → [PLAN_IMPLEMENTACION_EJECUTIVO.md](./PLAN_IMPLEMENTACION_EJECUTIVO.md)
+### 1️⃣ → [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md)
 
-**Sección relevante:** "Production Readiness Checklist"
+**Sección relevante:** "Criterios de Aceptación" y "Production Readiness Checklist"
 
 **Qué encontrarás:**
-- ✅ 50 items de testing organizados por categoría
-- ✅ Criterios de aceptación por sprint
+- ✅ Criterios de aceptación por cada fase
+- ✅ Scripts de validación automatizados
 - ✅ Benchmarks de performance requeridos
 - ✅ Security testing checklist
-- ✅ Load testing requirements
+- ✅ Guía de troubleshooting
 
 ---
 
@@ -216,13 +215,13 @@
 
 | Si necesitas... | Lee este documento | Tiempo |
 |-----------------|-------------------|--------|
-| **Convencer a ejecutivos** | [RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md) | 10 min |
-| **Aprobar presupuesto** | [PLAN_IMPLEMENTACION_EJECUTIVO.md](./PLAN_IMPLEMENTACION_EJECUTIVO.md) | 30 min |
+| **Entender el proyecto** | [RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md) | 10 min |
+| **Planificar implementación** | [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md) | 30 min |
 | **Diseñar arquitectura** | [ANALISIS_TECNICO_ARQUITECTURA.md](./ANALISIS_TECNICO_ARQUITECTURA.md) | 60 min |
-| **Presentar a stakeholders** | [ARQUITECTURA_DIAGRAMAS.md](./ARQUITECTURA_DIAGRAMAS.md) | 15 min |
+| **Visualizar arquitectura** | [ARQUITECTURA_DIAGRAMAS.md](./ARQUITECTURA_DIAGRAMAS.md) | 15 min |
 | **Implementar rápido (PoC)** | [QUICKSTART.md](./QUICKSTART.md) | 15 min |
 | **Escribir código** | [codigoworkbookv2.py](./codigoworkbookv2.py) + [ANALISIS_TECNICO_ARQUITECTURA.md](./ANALISIS_TECNICO_ARQUITECTURA.md) | 90 min |
-| **Configurar testing** | [PLAN_IMPLEMENTACION_EJECUTIVO.md](./PLAN_IMPLEMENTACION_EJECUTIVO.md) sección Checklist | 20 min |
+| **Configurar testing** | [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md) sección Checklist | 20 min |
 | **Security review** | [ANALISIS_TECNICO_ARQUITECTURA.md](./ANALISIS_TECNICO_ARQUITECTURA.md) sección 4 | 30 min |
 | **Troubleshooting** | [RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md) sección Common Issues | 5 min |
 
@@ -230,14 +229,16 @@
 
 ## 📚 Orden de Lectura Recomendado por Rol
 
-### 🎯 Ejecutivo / Sponsor
+### 🎯 Ejecutivo / PM
 
 ```
 1. RESUMEN_VISUAL.md (10 min)
    ↓
-2. PLAN_IMPLEMENTACION_EJECUTIVO.md (30 min)
+2. ARQUITECTURA_DIAGRAMAS.md (15 min)
    ↓
-3. DECISION: Aprobar proyecto
+3. GUIA_IMPLEMENTACION_TECNICA.md (30 min)
+   ↓
+4. DECISION: Aprobar proyecto
 ```
 
 ---
@@ -251,7 +252,7 @@
    ↓
 3. ARQUITECTURA_DIAGRAMAS.md (30 min)
    ↓
-4. PLAN_IMPLEMENTACION_EJECUTIVO.md (tareas + checklist) (30 min)
+4. GUIA_IMPLEMENTACION_TECNICA.md (pasos técnicos) (30 min)
    ↓
 5. DECISION: Validar diseño con equipo
 ```
@@ -277,11 +278,11 @@
 ### 🧪 QA / Tester
 
 ```
-1. PLAN_IMPLEMENTACION_EJECUTIVO.md (Checklist completo) (30 min)
+1. GUIA_IMPLEMENTACION_TECNICA.md (Criterios aceptación) (30 min)
    ↓
 2. RESUMEN_VISUAL.md (Performance targets) (10 min)
    ↓
-3. CREAR: Test plans basados en checklist
+3. CREAR: Test plans basados en criterios
 ```
 
 ---
@@ -293,7 +294,7 @@
    ↓
 2. ARQUITECTURA_DIAGRAMAS.md - Diagrama 6 (15 min)
    ↓
-3. PLAN_IMPLEMENTACION_EJECUTIVO.md - Security items (15 min)
+3. GUIA_IMPLEMENTACION_TECNICA.md - Security checklist (15 min)
    ↓
 4. REVIEW: Security posture y compliance
 ```
@@ -309,10 +310,10 @@
 │                                                              │
 │  Week -1: DISCOVERY & ALIGNMENT                             │
 │  ┌────────────────────────────────────────────────────┐     │
-│  │ 1. Ejecutivos leen RESUMEN_VISUAL.md              │     │
-│  │ 2. PM lee PLAN_IMPLEMENTACION_EJECUTIVO.md        │     │
+│  │ 1. Stakeholders leen RESUMEN_VISUAL.md            │     │
+│  │ 2. PM lee GUIA_IMPLEMENTACION_TECNICA.md          │     │
 │  │ 3. Arquitecto lee ANALISIS_TECNICO_ARQUITECTURA.md│     │
-│  │ 4. Go/No-Go meeting                                │     │
+│  │ 4. Kick-off meeting                                │     │
 │  └────────────────────────────────────────────────────┘     │
 │           │                                                  │
 │           ▼                                                  │
@@ -363,17 +364,16 @@
 Antes de empezar Sprint 1, verifica que hayas:
 
 - [ ] Leído [RESUMEN_VISUAL.md](./RESUMEN_VISUAL.md)
-- [ ] Leído [PLAN_IMPLEMENTACION_EJECUTIVO.md](./PLAN_IMPLEMENTACION_EJECUTIVO.md)
+- [ ] Leído [GUIA_IMPLEMENTACION_TECNICA.md](./GUIA_IMPLEMENTACION_TECNICA.md)
 - [ ] Revisado [ANALISIS_TECNICO_ARQUITECTURA.md](./ANALISIS_TECNICO_ARQUITECTURA.md)
-- [ ] Aprobado presupuesto ($29K one-time + $37/mes recurrente)
-- [ ] Asignado recursos (Data Engineer, Backend Dev, Security Arch, QA)
+- [ ] Recursos asignados (Data Engineer, Backend Dev, Security Arch, QA)
 - [ ] Workspace de Fabric creado y configurado
 - [ ] Acceso a SuccessFactors API (credentials en Key Vault)
 - [ ] Azure Key Vault configurado para secrets
-- [ ] Stakeholders alineados en roadmap de 5 semanas
+- [ ] Plan de implementación revisado (5 semanas)
 - [ ] Production readiness criteria acordados (>90% score)
 
-**¿Todo OK?** → Procede a Sprint 1 (Semana 1-2)
+**¿Todo OK?** → Procede a Fase 1 (Semana 1-2)
 
 ---
 

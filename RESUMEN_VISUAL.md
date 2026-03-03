@@ -37,7 +37,7 @@
 │              [Fabric Data Agent / Workbook]                  │
 │                                                              │
 │  ⚠️ PROBLEMAS:                                               │
-│  • Storage cost: $0.18/GB = $450/año                        │
+│  • Ineficiencia de almacenamiento                           │
 │  • Query latency: 250ms                                     │
 │  • Table size limit: 2GB max                                │
 │  • No versioning                                            │
@@ -65,10 +65,9 @@
 │          │  102025_t.jpg   │   │ photo_url ───────┼─────┐           │
 │          │  ...            │   │ thumbnail_url    │     │           │
 │          │                 │   │ classification   │     │           │
-│          │ 💰 $27/año      │   │ is_active        │     │           │
-│          └─────────────────┘   │ version          │     │           │
+│          └─────────────────┘   │ is_active        │     │           │
+│                                │ version          │     │           │
 │                                │                  │     │           │
-│                                │ 💰 $60/año       │     │           │
 │                                └──────────────────┘     │           │
 │                                        │                │           │
 │                                        ▼                │           │
@@ -93,8 +92,8 @@
 │                   ⚡ <50ms             ⚡ <150ms                      │
 │                                                                      │
 │  ✅ BENEFICIOS:                                                      │
-│  • Storage cost: $87/año (-81%)                                     │
-│  • Query latency: 50ms (-80%)                                       │
+│  • Optimización de almacenamiento                                  │
+│  • Query latency: 50ms (-80%)                                      │
 │  • Scalability: Ilimitada                                           │
 │  • Versioning: Sí                                                   │
 │  • Caching: Redis (hit rate >80%)                                   │
@@ -136,25 +135,6 @@ Cache Hit Rate
 Actual:  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0%    ❌
 Target:  ████████████████████████████████░░░░  80%    ✅
                                             +80%
-```
-
-### Costos
-
-```
-Storage Cost (Annual)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Actual:  ████████████████████████████████████  $450   ❌
-Target:  ████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   $87   ✅
-                                            -81%
-
-
-Total Monthly Cost
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Actual:  ████████████████████████████████░░░░  $416   
-Target:  ████████████████████████████████████  $452   
-                                             +9%
-
-⚠️ Nota: +9% en costos totales pero ROI 260% por mejoras en performance
 ```
 
 ### Governance
