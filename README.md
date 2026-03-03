@@ -32,8 +32,21 @@ Resumen ejecutivo visual con comparativas, KPIs y quick reference cards.
 | **[README.md](./README.md)** | Este archivo - Overview del proyecto completo |
 | **[QUICKSTART.md](./QUICKSTART.md)** | ⚡ Guía rápida de 15 minutos para implementar versión Base64 |
 | **[API_REFERENCE.md](./API_REFERENCE.md)** | 🔌 Referencia de API y funciones disponibles |
-| **[codigoworkbookv2.py](./codigoworkbookv2.py)** | 💻 Código Python para procesamiento de imágenes Base64 |
+| **[fabric_notebook_image_processing.py](./fabric_notebook_image_processing.py)** | 💻 Código Python para procesamiento de imágenes (8 celdas) |
 | **[FABRIC_NOTEBOOK_COPIAR_PEGAR.txt](./FABRIC_NOTEBOOK_COPIAR_PEGAR.txt)** | 📋 Código listo para copiar/pegar en Fabric Notebook |
+
+### 🆕 **Integración con Copilot Studio y Snowflake**
+
+| Archivo | Descripción |
+|---------|-------------|
+| **[SOLUCION_DATA_AGENT_OHR.md](./SOLUCION_DATA_AGENT_OHR.md)** | ⚡ **EMPIEZA AQUÍ** - Solución específica para OHR Agent con diagnóstico y 3 opciones |
+| **[CONFIGURACION_TOPIC_VW_TEST_DATABOT.md](./CONFIGURACION_TOPIC_VW_TEST_DATABOT.md)** | 📋 Configuración paso a paso para VW_TEST_DATABOT_ORIGINAL |
+| **[GUIA_COPILOT_STUDIO_INTEGRATION.md](./GUIA_COPILOT_STUDIO_INTEGRATION.md)** | 🤖 Guía completa para mostrar imágenes en Copilot Studio y generar PowerPoint |
+| **[COPILOT_STUDIO_EXAMPLES.md](./COPILOT_STUDIO_EXAMPLES.md)** | 📋 Ejemplos de configuración de Topics con Adaptive Cards |
+| **[snowflake_to_fabric_notebook.py](./snowflake_to_fabric_notebook.py)** | ❄️ Migrar datos de Snowflake a Fabric Lakehouse |
+| **[fabric_image_api.py](./fabric_image_api.py)** | 🌐 FastAPI para servir imágenes como URLs HTTP |
+| **[generate_ppt_with_openai.py](./generate_ppt_with_openai.py)** | 📊 Generar PowerPoint con Azure OpenAI + python-pptx |
+| **[adaptive_card_employee_template.json](./adaptive_card_employee_template.json)** | 🎨 Template de Adaptive Card para Copilot Studio |
 
 ---
 

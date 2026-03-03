@@ -1,0 +1,89 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "url": "${photo_url}",
+                  "size": "Medium",
+                  "style": "Person",
+                  "altText": "${employee_name}"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "${employee_name}",
+                  "weight": "Bolder",
+                  "size": "Large",
+                  "wrap": true
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "${position}",
+                  "spacing": "None",
+                  "isSubtle": true,
+                  "wrap": true
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "📍 ${department}",
+                  "spacing": "Small",
+                  "wrap": true
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "🆔 ${employee_id}",
+                  "spacing": "Small",
+                  "size": "Small",
+                  "isSubtle": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        {
+          "title": "Department:",
+          "value": "${department}"
+        },
+        {
+          "title": "Position:",
+          "value": "${position}"
+        },
+        {
+          "title": "Employee ID:",
+          "value": "${employee_id}"
+        }
+      ],
+      "separator": true,
+      "spacing": "Medium"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.OpenUrl",
+      "title": "Ver perfil completo",
+      "url": "${profile_url}"
+    }
+  ]
+}
